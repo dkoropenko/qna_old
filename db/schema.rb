@@ -30,10 +30,8 @@ ActiveRecord::Schema.define(version: 20161110170936) do
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "users_id"
     t.integer  "user_id"
     t.index ["user_id"], name: "index_questions_on_user_id", using: :btree
-    t.index ["users_id"], name: "index_questions_on_users_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
