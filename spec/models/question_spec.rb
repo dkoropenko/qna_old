@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Question, type: :model do
   describe "Associations" do
-    it { should have_many(:answers).dependent(:delete_all) }
+    it { should have_many(:answers).dependent(:destroy) }
     it { should belong_to :user }
   end
 
