@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = @question.answers.new required_params
+    @answer = @question.answers.new answer_params
 
     if @answer.save
       redirect_to questions_path
@@ -28,7 +28,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.update required_params
+    if @answer.update answer_update_params
       redirect_to questions_path
     else
       render :edit
@@ -50,7 +50,11 @@ class AnswersController < ApplicationController
     @question = Question.find params[:question_id]
   end
 
-  def required_params
+  def answer_params
+    params.require(:answer).permit(:body)
+  end
+
+  def answer_update_params
     params.require(:answer).permit(:body, :question_id)
   end
 end

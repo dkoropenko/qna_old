@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer) }
+  let(:question) { create :question }
+  let(:answer) { create :answer }
 
   describe 'GET #index' do
     let(:answers_list) { create_list(:answer, 2, question: question) }
@@ -62,20 +62,19 @@ RSpec.describe AnswersController, type: :controller do
       let(:post_answer) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
 
       it 'save new answer' do
-        expect { post_answer }.to change(Answer, :count).by(1)
+        expect { post_answer }.to change(question.answers, :count).by(1)
       end
       it 'redirect to questions index view' do
         post_answer
         expect(response).to redirect_to questions_path
       end
-
     end
 
     context 'with invalid attributes' do
       let(:post_answer_invalid) { post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) } }
 
       it 'does not save new answer' do
-        expect { post_answer_invalid }.to_not change(Answer, :count)
+        expect { post_answer_invalid }.to_not change(question.answers, :count)
       end
       it 'render new view' do
         post_answer_invalid
@@ -93,6 +92,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'find correct answer' do
         expect(assigns :answer).to eq answer
       end
+
       it 'update answer' do
         answer.reload
         expect(answer.body).to eq "NewLongAnswerBody"
