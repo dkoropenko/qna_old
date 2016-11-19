@@ -32,6 +32,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
+
     before do
       get :new, params: { question_id: question }
     end
@@ -46,6 +48,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
+    sign_in_user
+
     before do
       get :edit, params: { id: answer }
     end
@@ -58,6 +62,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
+
     context 'with valid attributes' do
       let(:post_answer) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
 
@@ -84,6 +90,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #update' do
+    sign_in_user
+
     context 'with valid attributes' do
       before do
         patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", question_id: question.id } }
@@ -121,6 +129,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    sign_in_user
+
     let(:delete_answer) { delete :destroy, params: { id: answer } }
 
     it 'deletes answer' do
