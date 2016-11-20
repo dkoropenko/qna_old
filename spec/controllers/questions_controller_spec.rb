@@ -85,7 +85,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 're-renders new view ' do
         post :create, params: { question: attributes_for(:invalid_question) }
-        expect(response).to render_template :new
+        expect(response).to redirect_to new_question_path
       end
     end
   end
@@ -119,8 +119,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "does not changed questions attributes" do
         question.reload
-        expect(question.title).to eq "MySomeString"
-        expect(question.body).to eq "MySomeText"
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
 
       it "re-render update question" do
@@ -130,11 +130,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before do
-      @user = question.user
-      @request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in @user
-    end
+    before { sign_in question.user }
 
     before do
       question

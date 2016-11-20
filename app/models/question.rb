@@ -7,6 +7,6 @@ class Question < ApplicationRecord
   validates :body, length: { minimum: 10 }
 
   def belongs?(user)
-    self.user == user
+    self.user.id == user.id if self.user.present? && user.present?
   end
 end

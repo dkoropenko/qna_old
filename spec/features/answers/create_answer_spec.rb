@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Create new Answer', %q{
   When user visit current question
-  and if he log in!
+  and if he sign in!
   He can write new answer for question
 } do
 
@@ -23,5 +23,16 @@ feature 'Create new Answer', %q{
     visit question_path question
 
     expect(page).to_not have_selector :link_or_button, 'Create answer'
+  end
+
+  scenario 'User try create new answer without valid data' do
+    sign_in user
+
+    visit question_path question
+    fill_in 'Body', with: ''
+    click_button 'Create answer'
+
+    expect(page).to have_current_path question_path question
+    expect(page).to have_text 'Answer body'
   end
 end

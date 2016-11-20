@@ -1,24 +1,26 @@
 require 'rails_helper'
 
-feature 'Show all question', %q{
-  User log in and open page with
-  all questions
+feature 'Show all questions', %q{
+  User can see all questions.
 } do
 
   given(:user) { create :user }
-  given(:question) { create :question }
-
   scenario 'Authenticated user seen questions' do
     sign_in user
+    questions = create_questions_collection
 
-    question
     visit questions_path
-    expect(page).to have_link question.title, href: question_path(question)
+    questions.each do |question|
+      expect(page).to have_link question.title, href: question_path(question)
+    end
   end
 
   scenario 'Non authenticated user seen questions' do
-    question
+    questions = create_questions_collection
+
     visit questions_path
-    expect(page).to have_link question.title, href: question_path(question)
+    questions.each do |question|
+      expect(page).to have_link question.title, href: question_path(question)
+    end
   end
 end

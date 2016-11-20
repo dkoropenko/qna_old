@@ -6,4 +6,10 @@ module FeaturesHelper
     fill_in 'Password', with: user.password
     click_on "Sign in"
   end
+
+  def create_questions_collection
+    result = []
+    10.times { result << create(:question) }
+    result
+  end
 end

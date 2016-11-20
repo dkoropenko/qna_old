@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
-      render :new
+      redirect_to new_question_path, notice: 'Question not saved. Check attributes.'
     end
   end
 

@@ -84,7 +84,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'render new view' do
         post_answer_invalid
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
@@ -129,11 +129,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before do
-      @user = answer.user
-      @request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in @user
-    end
+    before { sign_in answer.user}
 
     let(:delete_answer) { delete :destroy, params: { id: answer } }
 

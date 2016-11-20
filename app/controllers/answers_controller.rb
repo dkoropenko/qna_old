@@ -26,7 +26,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question_path @question
     else
-      render :new
+      redirect_to question_path(@question), notice: "Answer body #{@answer.errors.messages[:body].join(' and ')}"
     end
   end
 
