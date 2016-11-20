@@ -22,7 +22,7 @@ class AnswersController < ApplicationController
     @answer.user = current_user
 
     if @answer.save
-      redirect_to questions_path
+      redirect_to question_path @question
     else
       render :new
     end
@@ -37,8 +37,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to questions_path
+    if @answer.belongs? current_user
+      @answer.destroy
+      redirect_to @answer.question
+    else
+      redirect_to @answer.question, notice: 'You can\'t delete this answer'
+    end
   end
 
   private

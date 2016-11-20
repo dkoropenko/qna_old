@@ -9,6 +9,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answer = @question.answers.new
   end
 
   def new
@@ -38,8 +39,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    if @question.belongs? current_user
+      @question.destroy
+      redirect_to questions_path
+    else
+      render :edit, notice: 'You cannot delete this question'
+    end
   end
 
   private

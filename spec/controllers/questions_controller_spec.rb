@@ -130,7 +130,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user
+    before do
+      @user = question.user
+      @request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in @user
+    end
 
     before do
       question

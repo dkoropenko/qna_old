@@ -15,17 +15,12 @@ feature 'Create question', %q{
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'Test question'
-    click_on 'Create'
+    click_on 'Create question'
 
     expect(page).to have_content 'Your question successfully created.'
   end
 
   scenario 'Non authenticated user creates question' do
-    visit new_user_session_path
-    fill_in 'Email', with: 'invalid_user'
-    fill_in 'Password', with: 'invalid_user_password'
-    click_on "Sign in"
-
     visit questions_path
     click_on 'Ask question'
 

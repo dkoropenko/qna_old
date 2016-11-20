@@ -17,11 +17,6 @@ feature 'Show all question', %q{
   end
 
   scenario 'Non authenticated user seen questions' do
-    visit new_user_session_path
-    fill_in 'Email', with: 'invalid_user'
-    fill_in 'Password', with: 'invalid_user_password'
-    click_on "Sign in"
-
     question
     visit questions_path
     expect(page).to have_link question.title, href: question_path(question)

@@ -72,7 +72,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirect to questions index view' do
         post_answer
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to question_path question
       end
     end
 
@@ -129,17 +129,21 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    sign_in_user
+    before do
+      @user = answer.user
+      @request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in @user
+    end
 
     let(:delete_answer) { delete :destroy, params: { id: answer } }
 
     it 'deletes answer' do
       answer
-      expect{delete_answer}.to change(Answer, :count).by(-1)
+      expect { delete_answer }.to change(Answer, :count).by(-1)
     end
     it 'redirect to questions index view' do
       delete_answer
-      expect(response).to redirect_to questions_path
+      expect(response).to redirect_to question_path answer.question
     end
   end
 end
