@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :find_question, only: [:index, :new, :create]
   before_action :find_answer, only: [:show, :edit, :update, :destroy]
 
@@ -19,11 +21,12 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new answer_params
+    @answer.user = current_user
 
     if @answer.save
-      redirect_to questions_path
+      redirect_to question_path @question
     else
-      render :new
+      redirect_to question_path(@question), notice: "Answer body #{@answer.errors.messages[:body].join(' and ')}"
     end
   end
 
@@ -36,8 +39,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to questions_path
+    if @answer.belongs? current_user
+      @answer.destroy
+      redirect_to @answer.question
+    else
+      redirect_to @answer.question, notice: 'You can\'t delete this answer'
+    end
   end
 
   private

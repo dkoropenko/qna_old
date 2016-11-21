@@ -32,6 +32,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
+
     before do
       get :new, params: { question_id: question }
     end
@@ -46,6 +48,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #edit' do
+    sign_in_user
+
     before do
       get :edit, params: { id: answer }
     end
@@ -58,6 +62,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
+
     context 'with valid attributes' do
       let(:post_answer) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
 
@@ -66,7 +72,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'redirect to questions index view' do
         post_answer
-        expect(response).to redirect_to questions_path
+        expect(response).to redirect_to question_path question
       end
     end
 
@@ -78,12 +84,14 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'render new view' do
         post_answer_invalid
-        expect(response).to render_template :new
+        expect(response).to redirect_to question_path(question)
       end
     end
   end
 
   describe 'POST #update' do
+    sign_in_user
+
     context 'with valid attributes' do
       before do
         patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", question_id: question.id } }
@@ -121,15 +129,17 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    before { sign_in answer.user}
+
     let(:delete_answer) { delete :destroy, params: { id: answer } }
 
     it 'deletes answer' do
       answer
-      expect{delete_answer}.to change(Answer, :count).by(-1)
+      expect { delete_answer }.to change(Answer, :count).by(-1)
     end
     it 'redirect to questions index view' do
       delete_answer
-      expect(response).to redirect_to questions_path
+      expect(response).to redirect_to question_path answer.question
     end
   end
 end

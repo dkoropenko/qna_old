@@ -21,7 +21,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #show' do
     before do
-      get :show, params: { id: question.id }, session: { user_id: question.user_id }
+      get :show, params: { id: question.id }
     end
 
     it "assign the requested question to @question" do
@@ -34,7 +34,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
-
+    sign_in_user
     before do
       get :new
     end
@@ -50,9 +50,10 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit' do
+    sign_in_user
 
     before do
-      get :edit, params: { id: question.id }, session: { user_id: question.user_id }
+      get :edit, params: { id: question.id }
     end
 
     it "assign the requested question to @question" do
@@ -65,9 +66,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
+
     context 'with valid attributes' do
       it 'saved question in database' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { post :create, params: {question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
       it 'redirect to edit view' do
         post :create, params: { question: attributes_for(:question) }
@@ -82,12 +85,14 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 're-renders new view ' do
         post :create, params: { question: attributes_for(:invalid_question) }
-        expect(response).to render_template :new
+        expect(response).to redirect_to new_question_path
       end
     end
   end
 
   describe 'PATCH #update' do
+    sign_in_user
+
     context 'with valid attributes' do
       it "assign the requested question to @question" do
         patch :update, params: { id: question, question: attributes_for(:question) }
@@ -114,8 +119,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it "does not changed questions attributes" do
         question.reload
-        expect(question.title).to eq "MySomeString"
-        expect(question.body).to eq "MySomeText"
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
 
       it "re-render update question" do
@@ -125,6 +130,8 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    before { sign_in question.user }
+
     before do
       question
     end

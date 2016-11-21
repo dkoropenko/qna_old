@@ -1,8 +1,11 @@
 class User < ApplicationRecord
-  has_many :answers
-  has_many :questions
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
 
-  validates :firstname, :lastname, presence: true
-  validates :firstname, length: { minimum: 3 }
-  validates :lastname, length: { minimum: 5 }
+  has_many :questions
+  has_many :answers
+
+  validates :email, :password, presence: true
 end
