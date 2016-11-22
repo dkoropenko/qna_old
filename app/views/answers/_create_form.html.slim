@@ -1,0 +1,14 @@
+- if @answer.errors.any?
+    #errors
+      - @answer.errors.full_messages.each do |msg|
+        = msg
+
+table
+  tr
+    td = 'You can create new answer'
+  tr
+    td 
+      = form_for [@question, @answer], remote: true do |answer_form|
+        = answer_form.label :body, "Ask or answer"
+        = answer_form.text_area :body    
+        = answer_form.submit 'Create answer'
