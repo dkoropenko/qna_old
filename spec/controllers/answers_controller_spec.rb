@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do
       let(:post_answer_invalid) { post :create,
                                        params: { question_id: question, answer: attributes_for(:invalid_answer) },
-                                       format: :js}
+                                       format: :js }
 
       it 'does not save new answer' do
         expect { post_answer_invalid }.to_not change(question.answers, :count)
@@ -41,7 +41,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       before do
-        patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", question_id: question.id } }
+        patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody" }, format: :js }
       end
 
       it 'find correct answer' do
@@ -51,32 +51,31 @@ RSpec.describe AnswersController, type: :controller do
       it 'update answer' do
         answer.reload
         expect(answer.body).to eq "NewLongAnswerBody"
-        expect(answer.question_id).to eq question.id
       end
-      it 'redirect to questions index view' do
-        expect(response).to redirect_to questions_path
+
+      it 'response 200' do
+        expect(response).to have_http_status :success
       end
     end
 
     context 'with invalid attributes' do
       before do
-        patch :update, params: { id: answer, answer: { body: "", question_id: nil } }
+        patch :update, params: { id: answer, answer: { body: "" }, format: :js }
       end
       it 'find correct answer' do
         expect(assigns :answer).to eq answer
       end
       it 'does not update answer' do
         expect(answer.body).to_not eq ""
-        expect(answer.question_id).to_not eq nil
       end
-      it 'render edit view' do
-        expect(response).to render_template :edit
+      it 'response 200' do
+        expect(response).to have_http_status :success
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    before { sign_in answer.user}
+    before { sign_in answer.user }
 
     let(:delete_answer) { delete :destroy, params: { id: answer } }
 

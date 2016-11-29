@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper.rb'
 
 feature 'Remove question', %q{
   When user authenticated, he can delete

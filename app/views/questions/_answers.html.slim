@@ -1,7 +1,18 @@
 b = 'Answers for this question:'
-table  
+table
   - @question.answers.each do |answer|
     tr
-      td = answer.body
+      td 
+        span id="answer-#{answer.id}"
+          = answer.body
       - if user_signed_in? && answer.belongs?(current_user)
-        td = link_to 'Remove answer', answer_path(answer), method: :delete
+	      td 
+		    = link_to 'Edit answer', '', class: 'edit-answer-link', data: {answer_id: answer.id}
+		    = form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"} do |form|
+		   	  = form.label :body, "Answer body"
+              br
+		   	  = form.text_area :body
+              br
+		   	  = form.submit 'Change answer'
+	      td 
+	          = link_to 'Remove answer', answer_path(answer), method: :delete

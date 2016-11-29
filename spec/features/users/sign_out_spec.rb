@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper.rb'
 
 feature 'User can logout', %q{
   When user sign he can logout

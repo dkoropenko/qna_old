@@ -1,11 +1,8 @@
-- if @answer.errors.any?
-    #errors
-      - @answer.errors.full_messages.each do |msg|
-        = msg
 
 table
   tr
-    td = 'You can create new answer'
+    td 
+      = "You can create new answer"
   tr
     td 
       = form_for [@question, @answer], remote: true do |answer_form|

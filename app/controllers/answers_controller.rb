@@ -10,15 +10,8 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
-  def edit
-  end
-
   def update
-    if @answer.update answer_update_params
-      redirect_to questions_path
-    else
-      render :edit
-    end
+    @answer.update answer_params    
   end
 
   def destroy
@@ -42,9 +35,5 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body)
-  end
-
-  def answer_update_params
-    params.require(:answer).permit(:body, :question_id)
-  end
+  end  
 end
