@@ -17,6 +17,12 @@ group :development, :test do
 
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
+  gem 'shoulda-matchers'
+  gem 'rails-controller-testing'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
@@ -25,11 +31,3 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
-group :test do
-  gem 'shoulda-matchers'
-  gem 'rails-controller-testing'
-  gem 'capybara'
-  gem 'launchy'
-end
-

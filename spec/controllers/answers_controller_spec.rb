@@ -4,87 +4,34 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create :question }
   let(:answer) { create :answer }
 
-  describe 'GET #index' do
-    let(:answers_list) { create_list(:answer, 2, question: question) }
-
-    before do
-      get :index, params: { question_id: question }
-    end
-
-    it 'find all answers for question' do
-      expect(assigns :answers).to match_array(answers_list)
-    end
-    it 'render index view' do
-      expect(response).to render_template :index
-    end
-  end
-
-  describe 'GET #show' do
-    before do
-      get :show, params: { id: answer }
-    end
-    it 'find correct answer' do
-      expect(assigns :answer).to eq answer
-    end
-    it 'render show view' do
-      expect(response).to render_template :show
-    end
-  end
-
-  describe 'GET #new' do
-    sign_in_user
-
-    before do
-      get :new, params: { question_id: question }
-    end
-
-    it 'find correct answer' do
-      expect(assigns :answer).to be_a_new Answer
-    end
-
-    it 'render new view' do
-      expect(response).to render_template :new
-    end
-  end
-
-  describe 'GET #edit' do
-    sign_in_user
-
-    before do
-      get :edit, params: { id: answer }
-    end
-    it 'find correct answer' do
-      expect(assigns :answer).to eq answer
-    end
-    it 'render show view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
 
     context 'with valid attributes' do
-      let(:post_answer) { post :create, params: { question_id: question, answer: attributes_for(:answer) } }
+      let(:post_answer) { post :create,
+                               params: { question_id: question, answer: attributes_for(:answer) },
+                               format: :js }
 
       it 'save new answer' do
         expect { post_answer }.to change(question.answers, :count).by(1)
       end
       it 'redirect to questions index view' do
         post_answer
-        expect(response).to redirect_to question_path question
+        expect(response).to have_http_status :success
       end
     end
 
     context 'with invalid attributes' do
-      let(:post_answer_invalid) { post :create, params: { question_id: question, answer: attributes_for(:invalid_answer) } }
+      let(:post_answer_invalid) { post :create,
+                                       params: { question_id: question, answer: attributes_for(:invalid_answer) },
+                                       format: :js}
 
       it 'does not save new answer' do
         expect { post_answer_invalid }.to_not change(question.answers, :count)
       end
       it 'render new view' do
         post_answer_invalid
-        expect(response).to redirect_to question_path(question)
+        expect(response).to have_http_status :success
       end
     end
   end

@@ -1,0 +1,6 @@
+<tr>
+	<td><%= @answer.body %></td>
+	<% if user_signed_in? && @answer.belongs?(current_user) %>
+		<td><%= link_to 'Remove answer', answer_path(@answer), method: :delete %></td>
+	<% end %>
+</tr>

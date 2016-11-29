@@ -1,33 +1,16 @@
 class AnswersController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:index, :new, :create]
-  before_action :find_answer, only: [:show, :edit, :update, :destroy]
-
-
-  def index
-    @answers = @question.answers
-  end
-
-  def show
-  end
-
-  def new
-    @answer = @question.answers.new
+  before_action :find_question, only: [:create]
+  before_action :find_answer, only: [:update, :destroy]
+  
+  def create
+    @answer = @question.answers.create answer_params
+    @answer.user = current_user
+    @answer.save
   end
 
   def edit
-  end
-
-  def create
-    @answer = @question.answers.new answer_params
-    @answer.user = current_user
-
-    if @answer.save
-      redirect_to question_path @question
-    else
-      redirect_to question_path(@question), notice: "Answer body #{@answer.errors.messages[:body].join(' and ')}"
-    end
   end
 
   def update
