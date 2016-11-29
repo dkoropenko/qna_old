@@ -102,7 +102,7 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'with non valid attributes' do
       before do
-        patch :update, params: { id: question, question: { title: "New Title", body: nil } }
+        patch :update, params: { id: question, question: { title: "New Title", body: nil }, format: :js }
       end
 
       it "does not changed questions attributes" do

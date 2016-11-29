@@ -65,10 +65,11 @@ feature 'Answer editing', %q{
         within '.edit_answer' do
           fill_in :answer_body, with: 'short'
           click_on 'Change answer'
+
+          expect(page).to have_selector 'textarea'
         end
 
         within '.answers' do
-          expect(page).to_not have_selector 'textarea'
           expect(page).to have_text answer.body
         end
 
