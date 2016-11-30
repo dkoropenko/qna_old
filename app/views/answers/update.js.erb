@@ -1,6 +1,8 @@
-<% if @answer.errors.present? %>  
-	$('#errors').html("<%= j render 'message' %>");
-<% else %>	
-	$('#answer-<%= @answer.id %>').html('<%= @answer.body %>');
-	$('form#edit-answer-<%= @answer.id %>').hide();
+<% if @answer.errors.present? %>
+  $('#errors').html("<%= j render 'message' %>");
+<% elsif @answer.best %>
+  $('div.answers').html('<%= j render 'questions/answers' %>');
+<% else %>
+  $('#answer-<%= @answer.id %>').html('<%= @answer.body %>');
+  $('form#edit-answer-<%= @answer.id %>').hide();
 <% end %>

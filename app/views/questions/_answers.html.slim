@@ -1,18 +1,23 @@
 b = 'Answers for this question:'
 table
-  - @question.answers.each do |answer|
+  - @question.reload.sort_by_best_answer.each do |answer|
     tr
-      td 
+      td
         span id="answer-#{answer.id}"
           = answer.body
+          = answer.best
       - if user_signed_in? && answer.belongs?(current_user)
-	      td 
-		    = link_to 'Edit answer', '', class: 'edit-answer-link', data: {answer_id: answer.id}
-		    = form_for answer, remote: true, html: {id: "edit-answer-#{answer.id}"} do |form|
+	      td
+		    = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+		    = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |form|
 		   	  = form.label :body, "Answer body"
               br
 		   	  = form.text_area :body
               br
 		   	  = form.submit 'Change answer'
-	      td 
+	      td
 	          = link_to 'Remove answer', answer_path(answer), method: :delete
+
+      - if user_signed_in? && @question.belongs?(current_user)
+          td
+            = link_to 'Best answer', answer_path(answer, answer: { body: answer.body, best: true }), remote: true, method: :put

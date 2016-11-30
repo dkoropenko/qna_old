@@ -9,4 +9,18 @@ class Question < ApplicationRecord
   def belongs?(user)
     self.user.id == user.id if self.user.present? && user.present?
   end
+
+  def clear_best_answers
+    self.answers.each do |answer|
+      answer.best = false
+      answer.save
+    end
+  end
+
+  def sort_by_best_answer
+    answers = []
+    answers << self.answers.map {|answer| answer if answer.best}
+    answers << self.answers.map {|answer| answer unless answer.best}
+    answers.flatten.compact
+  end
 end
