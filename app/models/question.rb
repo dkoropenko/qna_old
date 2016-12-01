@@ -12,15 +12,15 @@ class Question < ApplicationRecord
 
   def clear_best_answers
     self.answers.each do |answer|
-      answer.best = false
+      answer.is_best = false
       answer.save
     end
   end
 
   def sort_by_best_answer
     answers = []
-    answers << self.answers.map {|answer| answer if answer.best}
-    answers << self.answers.map {|answer| answer unless answer.best}
+    answers << self.answers.map {|answer| answer if answer.is_best}
+    answers << self.answers.map {|answer| answer unless answer.is_best}
     answers.flatten.compact
   end
 end

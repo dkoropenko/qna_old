@@ -5,7 +5,7 @@ feature 'User can logout', %q{
   and exit form system.
 } do
 
-  given(:user) { create :user }
+  let(:user) { create :user }
   scenario 'Authenticated user logout' do
     sign_in user
     page.driver.submit :delete, destroy_user_session_path, {}

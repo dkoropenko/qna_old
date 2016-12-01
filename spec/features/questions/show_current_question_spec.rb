@@ -5,8 +5,8 @@ feature 'Show current question', %q{
   question and all answers for this questions.
 } do
 
-  given(:user) { create :user }
-  given(:answer) { create :answer }
+  let(:user) { create :user }
+  let(:answer) { create :answer }
 
   scenario 'Authenticated user seen current questions' do
     answer

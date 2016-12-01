@@ -6,8 +6,8 @@ feature 'User edited question', %q{
   errors alert.
 } do
 
-  given(:question) { create :question }
-  given(:other_question) { create :question }
+  let(:question) { create :question }
+  let(:other_question) { create :question }
 
   describe 'Authenticated user' do
     before do
@@ -124,7 +124,7 @@ feature 'User edited question', %q{
   end
 
   describe 'Unauthenticated user' do
-    given(:user) { create :user }
+    let(:user) { create :user }
     scenario 'Trying to chenge question' do
       sign_in user
       expect(page).to have_current_path root_path

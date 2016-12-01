@@ -4,12 +4,17 @@ table
     tr
       td
         span id="answer-#{answer.id}"
-          = answer.body
-          = answer.best
+          - if answer.is_best
+            #best_answer
+              = answer.body
+          - else
+            = answer.body
+    tr
       - if user_signed_in? && answer.belongs?(current_user)
 	      td
 		    = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
 		    = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |form|
+              = form.hidden_field :is_best, value: false
 		   	  = form.label :body, "Answer body"
               br
 		   	  = form.text_area :body
@@ -20,4 +25,4 @@ table
 
       - if user_signed_in? && @question.belongs?(current_user)
           td
-            = link_to 'Best answer', answer_path(answer, answer: { body: answer.body, best: true }), remote: true, method: :put
+            = link_to 'Best answer', answer_path(answer, answer: { body: answer.body, is_best: true }), remote: true, method: :put

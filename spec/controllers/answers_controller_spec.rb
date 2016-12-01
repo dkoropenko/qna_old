@@ -41,7 +41,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with valid attributes' do
       before do
-        patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", best: true }, format: :js }
+        patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", is_best: true }, format: :js }
       end
 
       it 'find correct answer' do
@@ -51,7 +51,7 @@ RSpec.describe AnswersController, type: :controller do
       it 'update answer' do
         answer.reload
         expect(answer.body).to eq "NewLongAnswerBody"
-        expect(answer.best).to eq true
+        expect(answer.is_best).to eq true
       end
 
       it 'response 200' do
@@ -61,14 +61,14 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'with invalid attributes' do
       before do
-        patch :update, params: { id: answer, answer: { body: "", best: true }, format: :js }
+        patch :update, params: { id: answer, answer: { body: "", is_best: true }, format: :js }
       end
       it 'find correct answer' do
         expect(assigns :answer).to eq answer
       end
       it 'does not update answer' do
         expect(answer.body).to_not eq ""
-        expect(answer.best).to eq false
+        expect(answer.is_best).to eq false
       end
       it 'response 200' do
         expect(response).to have_http_status :success

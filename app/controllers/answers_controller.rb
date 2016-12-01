@@ -11,7 +11,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if params[:answer][:best]
+    if params[:answer][:is_best]
       @question = @answer.question
       @question.clear_best_answers
     end
@@ -39,6 +39,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :best)
+    params.require(:answer).permit(:body, :is_best)
   end  
 end

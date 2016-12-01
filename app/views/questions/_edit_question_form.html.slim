@@ -1,0 +1,15 @@
+= form_for @question, remote: true, html: {id: "edit-question-form"} do |form|
+  table
+    tr
+      td
+        = form.label :title, 'Question title'
+      td
+        = form.text_field :title
+    tr
+      td
+        = form.label :body, 'Question body'
+      td
+        = form.text_area :body
+    tr
+      td
+        = form.submit 'Change question'

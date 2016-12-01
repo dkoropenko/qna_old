@@ -6,8 +6,8 @@ feature 'Remove answer', %q{
   authenticated, he can't doing anything
 } do
 
-  given(:user) { create :user }
-  given(:answer) { create :answer }
+  let(:user) { create :user }
+  let(:answer) { create :answer }
   scenario 'Authenticated user delete own answer' do
     sign_in answer.user
     visit question_path answer.question

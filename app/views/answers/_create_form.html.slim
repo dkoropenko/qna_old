@@ -1,11 +1,11 @@
 
 table
   tr
-    td 
-      = "You can create new answer"
-  tr
-    td 
+    td
       = form_for [@question, @answer], remote: true do |answer_form|
         = answer_form.label :body, "Ask or answer"
-        = answer_form.text_area :body    
+        = answer_form.hidden_field :is_best, value: false
+        br
+        = answer_form.text_area :body
+        br
         = answer_form.submit 'Create answer'
