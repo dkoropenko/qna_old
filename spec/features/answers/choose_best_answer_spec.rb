@@ -32,7 +32,6 @@ feature 'Choose Best Answer', %q{
 
           find('tr', text: question.answers.last.body).click_link('Best answer')
           expect(page).to have_css '#best_answer', count: 1
-          save_and_open_page
           expect(page).to have_selector('table tr:nth-child(1)', text: question.answers.last.body)
         end
       end
@@ -47,7 +46,6 @@ feature 'Choose Best Answer', %q{
         expect(page).to have_current_path question_path question
 
         within '.answers' do
-          save_and_open_page
           expect(page).to_not have_link 'Best answer'
         end
       end
