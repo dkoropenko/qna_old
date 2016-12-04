@@ -6,8 +6,8 @@ feature 'Remove question', %q{
   authenticated, he can't doing anything
 } do
 
-  let(:user) { create :user }
-  let(:question) { create :question }
+  given(:user) { create :user }
+  given(:question) { create :question }
   scenario 'Authenticated user delete own question' do
     sign_in question.user
 

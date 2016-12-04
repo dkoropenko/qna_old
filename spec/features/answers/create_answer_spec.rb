@@ -6,8 +6,8 @@ feature 'Create new Answer', %q{
   He can write new answer for question
 } do
 
-  let!(:user) { create :user }
-  let!(:question) { create :question }
+  given!(:user) { create :user }
+  given!(:question) { create :question }
 
   describe 'Authenticated user' do
     before do

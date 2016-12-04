@@ -5,8 +5,8 @@ feature 'Answer editing', %q{
 	As an author of Answer
 	I'd like to be able to edit my answer
 } do
-  let(:user) { create :user }
-  let(:answer) { create :answer }
+  given(:user) { create :user }
+  given(:answer) { create :answer }
 
   describe 'Autenticated user' do
     describe 'Edit own answer' do

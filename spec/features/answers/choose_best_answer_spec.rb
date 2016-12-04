@@ -7,10 +7,10 @@ feature 'Choose Best Answer', %q{
   answer.
 } do
 
-  let(:user) { create :user }
-  let(:another_user) {create :user}
-  let(:question) { create :question, user: user }
-  let!(:answers) { create_list :answer, 5, question: question }
+  given(:user) { create :user }
+  given(:another_user) { create :user }
+  given(:question) { create :question, user: user }
+  given!(:answers) { create_list :answer, 5, question: question }
 
   describe 'Authenticated user' do
     describe 'User open own question' do
@@ -26,11 +26,14 @@ feature 'Choose Best Answer', %q{
       end
 
       scenario 'Answer changed position after click on link', js: true do
-        within '.answers' do
-          expect(page).to_not have_css '#best_answer'
+        expect(page).to_not have_css '#best_answer'
 
-          click_link 'Best answer', match: :first
+        within '.answers' do
+
+          find('tr', text: question.answers.last.body).click_link('Best answer')
           expect(page).to have_css '#best_answer', count: 1
+          save_and_open_page
+          expect(page).to have_selector('table tr:nth-child(1)', text: question.answers.last.body)
         end
       end
     end
@@ -44,6 +47,7 @@ feature 'Choose Best Answer', %q{
         expect(page).to have_current_path question_path question
 
         within '.answers' do
+          save_and_open_page
           expect(page).to_not have_link 'Best answer'
         end
       end

@@ -11,10 +11,7 @@ class Question < ApplicationRecord
   end
 
   def clear_best_answers
-    self.answers.each do |answer|
-      answer.is_best = false
-      answer.save
-    end
+    answers.update_all(is_best: false)
   end
 
   def sort_by_best_answer

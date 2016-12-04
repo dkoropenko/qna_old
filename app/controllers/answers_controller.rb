@@ -2,8 +2,8 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:update, :destroy]
-  
+  before_action :find_answer, only: [:update, :choose_best_answer, :destroy]
+
   def create
     @answer = @question.answers.create answer_params
     @answer.user = current_user
@@ -11,12 +11,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if params[:answer][:is_best]
-      @question = @answer.question
-      @question.clear_best_answers
+    if @answer.belongs? current_user
+      @answer.update answer_params
     end
-    @answer.update answer_params
-    p @answer
+  end
+
+  def choose_best_answer
+    @question = @answer.question
+
+    if @question.belongs?(current_user) && @question.clear_best_answers
+      @answer.update answer_params
+    end
   end
 
   def destroy
@@ -40,5 +45,5 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, :is_best)
-  end  
+  end
 end

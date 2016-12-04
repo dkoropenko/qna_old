@@ -21,8 +21,8 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
-  gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'capybara-webkit', '1.1.0'
+  gem 'capybara', '~> 2.10'
   gem 'launchy'
 end
 

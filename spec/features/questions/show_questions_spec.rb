@@ -4,7 +4,7 @@ feature 'Show all questions', %q{
   User can see all questions.
 } do
 
-  let(:user) { create :user }
+  given(:user) { create :user }
   scenario 'Authenticated user seen questions' do
     sign_in user
     questions = create_questions_collection
