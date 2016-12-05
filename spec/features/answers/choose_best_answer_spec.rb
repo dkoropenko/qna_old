@@ -21,7 +21,8 @@ feature 'Choose Best Answer', %q{
         visit question_path question
         expect(page).to have_current_path question_path question
       end
-      scenario 'Can seen link to change best answer' do
+
+      scenario 'Can see link to change best answer' do
         expect(page).to have_link 'Best answer'
       end
 
@@ -29,10 +30,9 @@ feature 'Choose Best Answer', %q{
         expect(page).to_not have_css '#best_answer'
 
         within '.answers' do
-
-          find('tr', text: question.answers.last.body).click_link('Best answer')
+          find("a[href='#{choose_best_answer_path answers.last}']").click
           expect(page).to have_css '#best_answer', count: 1
-          expect(page).to have_selector('table tr:nth-child(1)', text: question.answers.last.body)
+          expect(page).to have_selector('table tr:first-child', text: answers.last.body)
         end
       end
     end

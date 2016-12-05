@@ -11,26 +11,17 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if @answer.belongs? current_user
-      @answer.update answer_params
-    end
+    @answer.update answer_params
   end
 
   def choose_best_answer
     @question = @answer.question
-
-    if @question.belongs?(current_user) && @question.clear_best_answers
-      @answer.update answer_params
-    end
+    @answer.make_best!
   end
 
   def destroy
-    if @answer.belongs? current_user
-      @answer.destroy
-      redirect_to @answer.question
-    else
-      redirect_to @answer.question, notice: 'You can\'t delete this answer'
-    end
+    @question = @answer.question
+    @answer.destroy
   end
 
   private

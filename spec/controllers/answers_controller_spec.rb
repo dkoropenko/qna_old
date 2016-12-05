@@ -112,7 +112,7 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'With valid attributes' do
         before do
-          patch :choose_best_answer, params: { id: answer.id, answer: { body: answer.body, is_best: true }, format: :js }
+          patch :choose_best_answer, params: { id: answer.id, format: :js }
         end
 
         it 'choose best answer' do
@@ -126,55 +126,21 @@ RSpec.describe AnswersController, type: :controller do
           expect(response).to have_http_status :success
         end
       end
-
-      context 'With non valid attributes' do
-        before do
-          patch :choose_best_answer, params: { id: answer.id, answer: { body: 'ValidAnswerBody', is_best: nil }, format: :js }
-        end
-
-        it 'Can not choose best answer' do
-          answer.reload
-          expect(answer.body).to_not have_text "ValidAnswerBody"
-          expect(answer.is_best).to eq false
-        end
-
-        it "response 200" do
-          expect(response).to have_http_status :success
-        end
-      end
     end
-
-    context 'Non Authenticated user' do
-      before do
-        patch :choose_best_answer, params: { id: answer.id, answer: { body: answer.body, is_best: true }, format: :js }
-      end
-
-      it 'Can not choose best answer' do
-        answer_body = answer.body
-        answer.reload
-        expect(answer.body).to eq answer_body
-        expect(answer.is_best).to eq false
-      end
-
-      it "response 401" do
-        expect(response).to have_http_status 401
-      end
-    end
-
   end
 
   describe 'DELETE #destroy' do
     before { sign_in answer.user }
 
-    let(:delete_answer) { delete :destroy, params: { id: answer } }
+    let(:delete_answer) { delete :destroy, params: { id: answer }, format: :js }
 
-    it 'deletes answer' do
+    it 'delete answer' do
       answer
       expect { delete_answer }.to change(Answer, :count).by(-1)
     end
-    it 'redirect to questions index view' do
+    it 'response 200' do
       delete_answer
-      expect(response).to redirect_to question_path answer.question
+      expect(response).to have_http_status :success
     end
   end
 end

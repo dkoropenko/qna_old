@@ -9,4 +9,11 @@ class Answer < ApplicationRecord
   def belongs?(user)
     self.user.id == user.id if self.user.present? && user.present?
   end
+
+  def make_best!
+    transaction do
+      question.answers.update_all(is_best: false)
+      update is_best: true
+    end
+  end
 end

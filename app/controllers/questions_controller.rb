@@ -27,12 +27,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user == @question.user
+    @question.update(question_params)
   end
 
   def destroy
-    if @question.belongs? current_user
-      @question.destroy
+    if @question.destroy
       redirect_to questions_path
     else
       render :edit, notice: 'You cannot delete this question'
