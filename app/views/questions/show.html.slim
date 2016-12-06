@@ -1,8 +1,18 @@
-b = 'Question information'
+#errors
+
+p
+  b = 'Question information'
 br
-p = @question.title
-p = @question.body
-p = link_to 'Remove question', @question, method: :delete if @question.belongs? current_user
+#question_info
+  p = @question.title
+  p = @question.body
+
+- if @question.belongs? current_user
+  p
+    = link_to 'Edit question', '', id: 'edit-question-link'
+    = render 'edit_question_form'
+  p
+    = link_to 'Remove question', @question, method: :delete
 
 .answers
   = render 'answers'

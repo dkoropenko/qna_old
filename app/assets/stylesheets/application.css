@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+
+td {
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-bottom: 2px;
+}

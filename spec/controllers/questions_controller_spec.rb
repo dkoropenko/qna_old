@@ -49,28 +49,12 @@ RSpec.describe QuestionsController, type: :controller do
 
   end
 
-  describe 'GET #edit' do
-    sign_in_user
-
-    before do
-      get :edit, params: { id: question.id }
-    end
-
-    it "assign the requested question to @question" do
-      expect(assigns(:question)).to eq question
-    end
-
-    it "render show view" do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     sign_in_user
 
     context 'with valid attributes' do
       it 'saved question in database' do
-        expect { post :create, params: {question: attributes_for(:question) } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
       end
       it 'redirect to edit view' do
         post :create, params: { question: attributes_for(:question) }
@@ -91,30 +75,34 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    sign_in_user
+    before do
+      @request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in question.user
+    end
 
     context 'with valid attributes' do
+      before do
+        patch :update, params: { id: question, question: { title: "New Long Title", body: "New Long Body" }, format: :js }
+      end
+
       it "assign the requested question to @question" do
-        patch :update, params: { id: question, question: attributes_for(:question) }
         expect(assigns(:question)).to eq question
       end
 
       it "changes question attributes" do
-        patch :update, params: { id: question, question: { title: "New Title", body: "New Long Body" } }
         question.reload
-        expect(question.title).to eq "New Title"
+        expect(question.title).to eq "New Long Title"
         expect(question.body).to eq "New Long Body"
       end
 
-      it "redirects to update question" do
-        patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(response).to redirect_to question_path(assigns :question)
+      it "response status 200" do
+        expect(response).to have_http_status :success
       end
     end
 
     context 'with non valid attributes' do
       before do
-        patch :update, params: { id: question, question: { title: "New Title", body: nil } }
+        patch :update, params: { id: question, question: { title: "New Title", body: nil }, format: :js }
       end
 
       it "does not changed questions attributes" do
@@ -123,8 +111,8 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq question.body
       end
 
-      it "re-render update question" do
-        expect(response).to render_template :edit
+      it "response status 200" do
+        expect(response).to have_http_status :success
       end
     end
   end

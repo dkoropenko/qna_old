@@ -11,17 +11,18 @@ gem 'jbuilder', '~> 2.5'
 gem 'slim-rails'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
+gem 'bootstrap-sass'
 
 group :development, :test do
   gem 'byebug', platform: :mri
 
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
-  gem 'selenium-webdriver'
+  gem 'factory_girl_rails'  
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
-  gem 'capybara'
+  gem 'capybara-webkit', '1.1.0'
+  gem 'capybara', '~> 2.10'
   gem 'launchy'
 end
 

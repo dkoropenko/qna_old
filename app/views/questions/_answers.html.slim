@@ -1,7 +1,22 @@
 b = 'Answers for this question:'
-table  
+table
   - @question.answers.each do |answer|
     tr
-      td = answer.body
-      - if user_signed_in? && answer.belongs?(current_user)
-        td = link_to 'Remove answer', answer_path(answer), method: :delete
+      td
+        span id="answer-#{answer.id}"
+          - if answer.is_best
+            #best_answer
+              = answer.body
+          - else
+            = answer.body
+
+      - if answer.belongs? current_user
+	    td
+          = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+          = render partial: 'answers/edit_form', locals: {answer: answer}
+	    td
+	      = link_to 'Remove answer', answer_path(answer), remote: true, method: :delete
+
+      - if @question.belongs? current_user
+        td
+          = link_to 'Best answer', choose_best_answer_path(answer), remote: true, method: :put

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper.rb'
 
 feature 'Remove answer', %q{
   When user authenticated, he can delete
@@ -8,7 +8,7 @@ feature 'Remove answer', %q{
 
   given(:user) { create :user }
   given(:answer) { create :answer }
-  scenario 'Authenticated user delete own answer' do
+  scenario 'Authenticated user delete own answer', js: true do
     sign_in answer.user
     visit question_path answer.question
     click_on 'Remove answer'

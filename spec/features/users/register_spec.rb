@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper.rb'
 
 feature 'Register user', %q{
   User can register in system.

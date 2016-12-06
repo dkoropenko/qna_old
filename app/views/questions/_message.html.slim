@@ -1,0 +1,3 @@
+- if @question.errors.any?
+  - @question.errors.full_messages.each do |msg|
+    p = msg

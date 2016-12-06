@@ -1,13 +1,19 @@
 FactoryGirl.define do
+  sequence :body do |n|
+    "MyAswerBody#{n}"
+  end
+
   factory :answer do
-    body "MyLongBody"
+    body
     question
     user
+    is_best false
   end
 
   factory :invalid_answer, class: Answer do
-    body ""
+    body nil
     question nil
     user nil
+    is_best nil
   end
 end

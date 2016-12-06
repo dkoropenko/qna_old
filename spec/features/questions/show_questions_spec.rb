@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative '../features_helper.rb'
 
 feature 'Show all questions', %q{
   User can see all questions.

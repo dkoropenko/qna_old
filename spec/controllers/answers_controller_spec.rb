@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create :question }
   let(:answer) { create :answer }
+  let(:question) { create :question }
 
   describe 'POST #create' do
     sign_in_user
@@ -24,7 +24,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'with invalid attributes' do
       let(:post_answer_invalid) { post :create,
                                        params: { question_id: question, answer: attributes_for(:invalid_answer) },
-                                       format: :js}
+                                       format: :js }
 
       it 'does not save new answer' do
         expect { post_answer_invalid }.to_not change(question.answers, :count)
@@ -37,56 +37,110 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #update' do
-    sign_in_user
-
-    context 'with valid attributes' do
+    describe 'Authenticated user' do
       before do
-        patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", question_id: question.id } }
+        @user = answer.user
+        @request.env['devise.mapping'] = Devise.mappings[:user]
+        sign_in @user
       end
 
-      it 'find correct answer' do
-        expect(assigns :answer).to eq answer
+      context 'with valid attributes' do
+        before do
+          patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", is_best: true }, format: :js }
+        end
+
+        it 'find correct answer' do
+          expect(assigns :answer).to eq answer
+        end
+
+        it 'update answer' do
+          answer.reload
+          expect(answer.body).to eq "NewLongAnswerBody"
+          expect(answer.is_best).to eq true
+        end
+
+        it 'response 200' do
+          expect(response).to have_http_status :success
+        end
       end
 
-      it 'update answer' do
-        answer.reload
-        expect(answer.body).to eq "NewLongAnswerBody"
-        expect(answer.question_id).to eq question.id
-      end
-      it 'redirect to questions index view' do
-        expect(response).to redirect_to questions_path
+      context 'with invalid attributes' do
+        before do
+          patch :update, params: { id: answer, answer: { body: "", is_best: true }, format: :js }
+        end
+        it 'find correct answer' do
+          expect(assigns :answer).to eq answer
+        end
+        it 'does not update answer' do
+          expect(answer.body).to_not eq ""
+          expect(answer.is_best).to eq false
+        end
+        it 'response 200' do
+          expect(response).to have_http_status :success
+        end
       end
     end
 
-    context 'with invalid attributes' do
+    context 'Non authenticated user' do
+
+      context 'can not change answer' do
+        before do
+          patch :update, params: { id: answer, answer: { body: "NewLongAnswerBody", is_best: true }, format: :js }
+        end
+
+        it 'update answer' do
+          answer.reload
+          expect(answer.body).to_not eq "NewLongAnswerBody"
+          expect(answer.is_best).to_not eq true
+        end
+
+        it 'response 401' do
+          expect(response).to have_http_status 401
+        end
+      end
+
+    end
+  end
+
+  describe 'PUT #choose best question' do
+    describe 'Authenticated user' do
       before do
-        patch :update, params: { id: answer, answer: { body: "", question_id: nil } }
+        @user = answer.question.user
+        @request.env['devise.mapping'] = Devise.mappings[:user]
+        sign_in @user
       end
-      it 'find correct answer' do
-        expect(assigns :answer).to eq answer
-      end
-      it 'does not update answer' do
-        expect(answer.body).to_not eq ""
-        expect(answer.question_id).to_not eq nil
-      end
-      it 'render edit view' do
-        expect(response).to render_template :edit
+
+      context 'With valid attributes' do
+        before do
+          patch :choose_best_answer, params: { id: answer.id, format: :js }
+        end
+
+        it 'choose best answer' do
+          answer_body = answer.body
+          answer.reload
+          expect(answer.body).to eq answer_body
+          expect(answer.is_best).to eq true
+        end
+
+        it "response 200" do
+          expect(response).to have_http_status :success
+        end
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    before { sign_in answer.user}
+    before { sign_in answer.user }
 
-    let(:delete_answer) { delete :destroy, params: { id: answer } }
+    let(:delete_answer) { delete :destroy, params: { id: answer }, format: :js }
 
-    it 'deletes answer' do
+    it 'delete answer' do
       answer
       expect { delete_answer }.to change(Answer, :count).by(-1)
     end
-    it 'redirect to questions index view' do
+    it 'response 200' do
       delete_answer
-      expect(response).to redirect_to question_path answer.question
+      expect(response).to have_http_status :success
     end
   end
 end

@@ -1,0 +1,7 @@
+= form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |form|
+  = form.hidden_field :is_best, value: false
+  = form.label :body, "Answer body"
+  br
+  = form.text_area :body
+  br
+  = form.submit 'Change answer'
