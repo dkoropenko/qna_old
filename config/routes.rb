@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
   root to: 'questions#index'
+  
+  devise_for :users
+
   put 'answers/:id/choose_best_answer',
       controller: 'answers',
       action: 'choose_best_answer',

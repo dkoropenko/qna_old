@@ -4,6 +4,7 @@ RSpec.describe Question, type: :model do
   describe "Associations" do
     it { should have_many(:answers).dependent(:destroy) }
     it { should belong_to :user }
+    it { should have_many :attachments }
   end
 
   describe "Validation" do

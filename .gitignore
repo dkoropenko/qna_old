@@ -17,4 +17,5 @@
 .byebug_history
 
 config/database.yml
+Gemfile.lock
 .idea/

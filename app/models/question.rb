@@ -1,5 +1,6 @@
 class Question < ApplicationRecord
   has_many :answers, -> { order 'is_best desc' }, dependent: :destroy
+  has_many :attachments
   belongs_to :user
 
   validates :title, :body, :user_id, presence: true
