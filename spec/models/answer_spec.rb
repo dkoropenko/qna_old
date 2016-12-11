@@ -4,6 +4,7 @@ RSpec.describe Answer, type: :model do
   describe "Associations" do
     it { should belong_to :question }
     it { should belong_to :user }
+    it { should have_many :attachments }
   end
 
   describe "Validation" do
@@ -12,5 +13,6 @@ RSpec.describe Answer, type: :model do
     it { should validate_presence_of :user_id }
     it { should validate_length_of(:body).is_at_least(10) }
     it { should allow_value(true, false).for(:is_best) }
+    it { should accept_nested_attributes_for :attachments }
   end
 end

@@ -19,3 +19,8 @@
 config/database.yml
 Gemfile.lock
 .idea/
+
+/public/uploads
+/public/tmp
+/public/spec
+/public/system
