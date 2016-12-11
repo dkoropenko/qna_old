@@ -8,4 +8,8 @@ table
         br
         = answer_form.text_area :body
         br
+        = answer_form.fields_for :attachments do |attach_form|
+          = attach_form.label :file
+          = attach_form.file_field :file
+        br
         = answer_form.submit 'Create answer'

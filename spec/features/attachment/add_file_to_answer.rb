@@ -13,7 +13,7 @@ feature 'Add files to answer', %q{
 		visit question_path question
 	end
 
-	scenario 'User add file when answered' do
+	scenario 'User add file when answered', js: true do
 		within ".answers" do
 			fill_in 'Body', with: 'Test answer body'
 			attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"

@@ -9,7 +9,12 @@ table
               = answer.body
           - else
             = answer.body
-
+    tr
+      td
+        ul
+          - answer.attachments.each do |a|          
+            li = link_to a.file.identifier, a.file.url
+    tr
       - if answer.belongs? current_user
 	    td
           = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }

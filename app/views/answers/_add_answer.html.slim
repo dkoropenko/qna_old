@@ -1,0 +1,19 @@
+tr
+  td
+    span id="answer-#{@answer.id}"
+      = @answer.body
+tr
+  td
+    ul
+      - @answer.attachments.each do |a|          
+        li= link_to a.file.identifier, a.file.url
+tr
+  - if @answer.belongs? current_user
+  td
+      = link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: @answer.id }
+      = render partial: 'answers/edit_form', locals: {answer: @answer}
+  td
+    = link_to 'Remove answer', answer_path(@answer), remote: true, method: :delete
+  - if @question.belongs? current_user
+    td
+      = link_to 'Best answer', choose_best_answer_path(@answer), remote: true, method: :put

@@ -9,6 +9,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @answer.attachments.build
   end
 
   def new
@@ -23,7 +24,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
-      redirect_to new_question_path, notice: @question.errors
+      redirect_to new_question_path, notice: "Question not saved. Check attributes."
     end
   end
 
@@ -50,6 +51,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, attachments_attributes: [:file])
+    params.require(:question).permit(:title, :body, attachments_attributes: [:file, :id])
   end
 end
