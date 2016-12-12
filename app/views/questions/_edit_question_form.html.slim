@@ -12,4 +12,9 @@
         = form.text_area :body
     tr
       td
+        = form.fields_for :attachments do |attach_form|
+          = attach_form.label :file
+          = attach_form.file_field :file
+    tr
+      td
         = form.submit 'Change question'

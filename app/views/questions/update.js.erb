@@ -1,6 +1,6 @@
 <% if @question.errors.present? %>
   $('#errors').html("<%= j render 'message' %>");
 <% else %>
-  $('#question_info').html('<p><%= @question.title %></p><p><%= @question.body %></p>');
+  $('div.question_info').html('<%= j render 'question_info' %>');
   $('#edit-question-form').hide();
 <% end %>
