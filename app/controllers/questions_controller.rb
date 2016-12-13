@@ -1,8 +1,7 @@
 class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :update, :destroy]
-  before_action :build_new_attachment, only: [:show, :new]
+  before_action :find_question, only: [:show, :update, :destroy]  
 
   def index
     @questions = Question.all
@@ -10,11 +9,13 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
-    @answer.attachments.build
+    @answer.attachments.new
+    @question.attachments.new
   end
 
   def new
-    @question = Question.new    
+    @question = Question.new 
+    @question.attachments.new
   end
 
   def create
@@ -48,10 +49,6 @@ class QuestionsController < ApplicationController
 
   def find_question
     @question = Question.find params[:id]
-  end
-
-  def build_new_attachment
-    @question.attachments.new
   end
 
   def question_params

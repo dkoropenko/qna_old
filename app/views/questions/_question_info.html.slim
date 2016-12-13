@@ -4,11 +4,11 @@ br
   p = @question.title
   p = @question.body
 
-  #question_attachments
+#question_attachments
   p Attachments:
   ul
-    - @question.attachments.each do |a|
-      - if a.persisted?
+    - @question.attachments.each do |attachment|
+      - if attachment.persisted?
         li 
-          = link_to a.file.identifier, a.file.url 
-          = link_to 'Delete', destroy_attachment_path(a), remote: true, method: :delete if @question.belongs? current_user
+          = link_to attachment.file.identifier, attachment.file.url 
+          = link_to 'Delete', destroy_attachment_path(attachment), remote: true, method: :delete if @question.belongs? current_user

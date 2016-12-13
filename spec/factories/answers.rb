@@ -7,7 +7,7 @@ FactoryGirl.define do
     body
     question
     user
-    is_best false
+    is_best false    
   end
 
   factory :invalid_answer, class: Answer do
