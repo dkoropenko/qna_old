@@ -1,0 +1,14 @@
+p
+  b = 'Question information'
+br
+  p = @question.title
+  p = @question.body
+
+#question_attachments
+  p Attachments:
+  ul
+    - @question.attachments.each do |attachment|
+      - if attachment.persisted?
+        li 
+          = link_to attachment.file.identifier, attachment.file.url 
+          = link_to 'Delete', destroy_attachment_path(attachment), remote: true, method: :delete if @question.belongs? current_user

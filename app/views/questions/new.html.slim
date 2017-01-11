@@ -1,6 +1,23 @@
 = form_for @question do |f|
-  = f.label :title
-  = f.text_field :title
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Create question'
+  table
+    tr
+	  td
+	    = f.label :title
+	  td
+	    = f.text_field :title
+	tr
+	  td
+	    = f.label :body
+	  td
+	    = f.text_area :body
+	tr
+	  td
+	    = 'Attachments:'
+	tr
+	  td
+	  	= f.fields_for :attachments do |attach_form|
+	  	  = attach_form.label :file
+	   	  = attach_form.file_field :file
+    tr
+	  td
+	  	= f.submit 'Create question'

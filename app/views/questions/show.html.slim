@@ -1,17 +1,12 @@
 #errors
 
-p
-  b = 'Question information'
-br
-#question_info
-  p = @question.title
-  p = @question.body
+.question_info
+  = render 'question_info'
 
 - if @question.belongs? current_user
   p
     = link_to 'Edit question', '', id: 'edit-question-link'
     = render 'edit_question_form'
-  p
     = link_to 'Remove question', @question, method: :delete
 
 .answers

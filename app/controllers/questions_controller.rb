@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :find_question, only: [:show, :update, :destroy]
+  before_action :find_question, only: [:show, :update, :destroy]  
 
   def index
     @questions = Question.all
@@ -9,10 +9,13 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @answer.attachments.new
+    @question.attachments.new
   end
 
   def new
-    @question = Question.new
+    @question = Question.new 
+    @question.attachments.new
   end
 
   def create
@@ -22,7 +25,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
-      redirect_to new_question_path, notice: 'Question not saved. Check attributes.'
+      redirect_to new_question_path, notice: "Question not saved. Check attributes."
     end
   end
 
@@ -49,6 +52,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, attachments_attributes: [:file, :id])
   end
 end
